@@ -1,0 +1,37 @@
+{
+  "class-inequality": {
+    "label": "Class Inequality CFA",
+    "topic": "class inequality, domestic space, and social mobility",
+    "works": ["Roma (2018)", "Parasite (2019)"],
+    "context_terms": ["class inequality", "domestic labor", "domestic space", "social mobility", "family intimacy", "architecture", "ethnicity", "gender", "intra-class competition", "genre", "care work"],
+    "known_sources": [
+      {"title":"From Black Girl to Roma: Domestic Workers and the Intersection of Race/Ethnicity, Class, and Gender","doi":"10.1111/ajes.12440"},
+      {"title":"Lines Left to Cross: Deglobalization and the Domestic Western in Bong Joon-ho’s Parasite","doi":"10.1086/724983"},
+      {"title":"On Roma’s Monumentality","doi":"10.4000/interfaces.7978"},
+      {"title":"Intra-class Antipathy and Inter-class Identification in Parasite","doi":"10.23031/pnuacs.14.2.202107.002"}
+    ],
+    "help": [
+      ["Find research on one of the films", "What scholarship should I look at on Roma or Parasite that connects to class inequality, domestic labor, or domestic space?"],
+      ["Explore a concept", "What scholarship connects domestic labor, domestic space, class inequality, and social mobility in cinema?"],
+      ["Connect the films", "What research compares Roma and Parasite or provides a bridge between their treatment of class?"],
+      ["Broaden the search", "What broader film and media scholarship helps explain class through homes, labor, intimacy, architecture, and mobility?"],
+      ["Follow the existing research", "What scholarship sits close to the current Roma and Parasite research question and the sources already identified?"],
+      ["I’m not sure yet", "Show me a small set of useful scholarly directions connected to Roma, Parasite, domestic labor, domestic space, and class inequality."]
+    ]
+  },
+  "none": {
+    "label": "Open exploration",
+    "topic": "",
+    "works": [],
+    "context_terms": [],
+    "known_sources": [],
+    "help": [
+      ["Explore a topic", "I have a topic but I am not sure how the scholarly literature names it. Show me a few useful starting points."],
+      ["Start from a film or work", "I have a film, book, article, person, place, or event. Help me find scholarship around it."],
+      ["Follow a known source", "I have one useful scholarly source and want to see what research sits around it."],
+      ["Look for connections", "I want to explore how two works, people, events, ideas, or traditions may be connected."],
+      ["Broaden my search", "My current search is too narrow. Help me find broader scholarly language and nearby work."],
+      ["I’m not sure yet", "I am curious about something but do not yet have a clear research question. Show me a few useful scholarly starting points."]
+    ]
+  }
+}
