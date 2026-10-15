@@ -1,12 +1,359 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex"><title>Open Research Navigator — Demonstrator</title>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
+<meta name="description" content="Open Research Navigator proof-of-concept centered on Julie Dash's Daughters of the Dust.">
+<title>Daughters of the Dust | Open Research Navigator</title>
+<link rel="preconnect" href="https://cohenmedia.net">
+<link rel="preconnect" href="https://www.youtube-nocookie.com">
 <style>
-:root{--paper:#f3eee5;--ink:#25231f;--muted:#6f695f;--line:#cfc4b3;--gold:#9a7a35;--deep:#6f5522;--card:rgba(255,255,255,.76);--max:1160px}*{box-sizing:border-box}body{margin:0;background:linear-gradient(#faf7f1,var(--paper));color:var(--ink);font:17px/1.58 Georgia,serif}body.contrast{--paper:#fff;--ink:#000;--muted:#222;--line:#555;--card:#fff}.top{position:sticky;top:0;z-index:10;background:#faf7f1ee;border-bottom:1px solid var(--line)}.topin,main,footer{max-width:var(--max);margin:auto}.topin{padding:.7rem 1rem;display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap}.brand strong{font:800 .82rem system-ui;text-transform:uppercase;letter-spacing:.08em}.brand span{display:block;color:var(--muted);font: .76rem system-ui}.tools{display:flex;gap:.4rem;flex-wrap:wrap}.tools select,.tools button,.pillbtn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:.42rem .65rem;font:700 .75rem system-ui;color:var(--ink)}main{padding:3rem 1rem 5rem}.kicker{font:800 .76rem system-ui;color:var(--deep);text-transform:uppercase;letter-spacing:.09em}h1{font-size:clamp(2.5rem,6vw,5rem);line-height:.97;margin:.4rem 0 .8rem}.hero{max-width:820px}.hero p{color:#4c4942;font-size:1.1rem}.box,.result{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 38px #2f281c14}.box{padding:1rem;margin-top:1.5rem}.box label,.eyebrow{font:800 .74rem system-ui;text-transform:uppercase;letter-spacing:.06em}textarea.q{width:100%;min-height:105px;margin:.45rem 0 .65rem;padding:.75rem;border:1px solid var(--line);border-radius:11px;background:#fff}.row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}.primary{border:0;background:var(--ink);color:#fff;border-radius:999px;padding:.65rem .95rem;font:800 .78rem system-ui}.link{border:0;background:none;color:var(--deep);text-decoration:underline;font:700 .76rem system-ui}.help{display:none;border-top:1px solid var(--line);margin-top:1rem;padding-top:1rem}.help.open{display:block}.helpgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem}.helpgrid button{padding:.7rem;text-align:left;border:1px solid var(--line);background:#fff;border-radius:10px;font:700 .78rem system-ui}.session{margin:1rem 0;color:var(--muted);font:.76rem system-ui;display:flex;gap:.5rem;flex-wrap:wrap}.results{display:grid;gap:.8rem}.empty{border:1px dashed var(--line);border-radius:12px;padding:1rem;color:var(--muted);background:#ffffff66}.result{overflow:hidden}.rh{padding:.9rem 1rem;border-bottom:1px solid var(--line);display:grid;grid-template-columns:auto 1fr auto;gap:.65rem;align-items:start}.rh input{width:1.1rem;height:1.1rem;margin-top:.22rem}.rh h2{font-size:1.1rem;line-height:1.25;margin:0}.meta{color:var(--muted);font:.74rem system-ui}.badge{font:800 .68rem system-ui;border:1px solid var(--line);border-radius:999px;padding:.26rem .45rem;background:#fff;white-space:nowrap}.rb{padding:.95rem 1rem}.why{background:#e8eef2;border-radius:10px;padding:.7rem;margin-bottom:.7rem}.chips{display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.35rem}.chip{font:700 .67rem system-ui;border:1px solid #0002;background:#fff;border-radius:999px;padding:.22rem .4rem}mark{background:#ffe7a2}.subjects{margin-top:.65rem}details{margin-top:.7rem;border-top:1px solid var(--line);padding-top:.6rem}summary{cursor:pointer;font:800 .78rem system-ui}.notes{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-top:.65rem}.notes textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:9px;padding:.55rem}.canvaswrap{border:1px solid var(--line);border-radius:9px;background:#fff;overflow:hidden}.canvasbar{padding:.35rem;border-bottom:1px solid var(--line);font:.7rem system-ui;display:flex;justify-content:space-between}.canvasbar button{border:1px solid var(--line);border-radius:999px;background:#fff}.canvaswrap canvas{width:100%;height:170px;display:block;touch-action:none}.related-form{display:grid;grid-template-columns:1fr 1fr .8fr;gap:.4rem;margin-top:.55rem}.related-form input,.related-form select,.related-form textarea{border:1px solid var(--line);border-radius:8px;padding:.5rem;background:#fff}.related-form textarea{grid-column:1/-1;min-height:60px}.related-list{font-size:.84rem}.export{position:sticky;bottom:.7rem;background:#25231ff2;color:#fff;border-radius:13px;padding:.7rem;margin-top:1rem;display:flex;gap:.45rem;align-items:center;flex-wrap:wrap}.export span{margin-right:auto;font:.76rem system-ui}.export button{border:0;border-radius:999px;background:#fff;padding:.52rem .75rem;font:800 .75rem system-ui}.trail{margin:1rem 0}footer{border-top:1px solid var(--line);padding:1.5rem 1rem 3rem;color:var(--muted);font:.76rem system-ui}@media(max-width:780px){.helpgrid{grid-template-columns:1fr 1fr}.notes{grid-template-columns:1fr}.related-form{grid-template-columns:1fr}.related-form textarea{grid-column:auto}}@media(max-width:520px){.helpgrid{grid-template-columns:1fr}.rh{grid-template-columns:auto 1fr}.rh .badge{grid-column:2}}
-</style></head><body>
-<header class="top"><div class="topin"><div class="brand"><strong>Open Research Navigator</strong><span>Testable demonstrator · one engine, different depths</span></div><div class="tools"><select id="audience"><option value="student">LMC 4500 Student</option><option value="researcher">Researcher / Faculty</option><option value="public">Public / Family</option></select><select id="limit"><option value="5">5 results</option><option value="10">10 results</option></select><button id="minus">A−</button><button id="plus">A+</button><button id="contrast">High contrast</button></div></div></header>
-<main><section class="hero"><div class="kicker">Optional Research Support</div><h1>What are you looking for?</h1><p id="intro"></p></section>
-<section class="box"><label for="q">Research question or search</label><textarea class="q" id="q" placeholder="For example: Is there research on domestic labor and ethnicity in Roma?"></textarea><div class="row"><button class="primary" id="search">Search</button><button class="link" id="helpToggle">Not sure what to ask? What would help right now?</button><span class="meta" id="status">Ready</span></div><div class="help" id="help"><div class="helpgrid" id="helpGrid"></div></div></section>
-<div class="session"><span id="contextHint"></span><span>Session started <span id="started"></span>.</span><button class="link" id="trailToggle">View search trail</button><button class="link" id="reset">Start a new session</button></div><section id="trail" class="empty trail" hidden></section><section id="results" class="results"><div class="empty">Ask a question to begin. Results will appear in small sets of 5 or 10.</div></section>
-<div class="export"><span><strong id="count">0</strong> selected · session saved only in this browser</span><button id="txt">Download selected (.txt)</button><button id="html">Download Research Session (.html)</button></div></main>
-<footer><strong>Open Research Navigator demonstrator.</strong> Search results are research leads. Check the original source before quoting, citing, or relying on an abstract-based quick read. No permanent account or server-side research notebook is created by this prototype.</footer>
+:root{
+  --paper:#f1eadf; --paper-deep:#e6d9c8; --ink:#211d1a; --muted:#6e645c;
+  --line:#cdbca6; --gold:#a67d34; --gold2:#d5bb7c; --plum:#5c3b50; --sea:#3d6764;
+  --rose:#8b4d52; --sand:#d8c19d; --card:rgba(255,255,255,.72);
+  --shadow:0 24px 60px rgba(55,37,24,.12); --radius:20px; --max:1220px;
+  --font-scale:1;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:calc(16px * var(--font-scale))}
+body{margin:0;color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.66;
+background:
+radial-gradient(circle at 10% 0%,rgba(166,125,52,.14),transparent 30rem),
+radial-gradient(circle at 100% 40%,rgba(61,103,100,.09),transparent 34rem),
+linear-gradient(180deg,#faf6ef 0%,var(--paper) 52%,#ece1d2 100%);
+}
+body.contrast{--paper:#fff;--paper-deep:#fff;--ink:#000;--muted:#222;--line:#555;--card:#fff;--gold:#684600;--plum:#3c1730;--sea:#174c48}
+a{color:#684d1d;text-underline-offset:.18em}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+img{max-width:100%;display:block}
+.skip{position:absolute;left:-9999px;top:0}.skip:focus{left:1rem;top:1rem;background:#111;color:#fff;padding:.7rem 1rem;z-index:9999}
+.topbar{position:sticky;top:0;z-index:80;border-bottom:1px solid rgba(205,188,166,.74);background:rgba(250,246,239,.93);backdrop-filter:blur(15px)}
+.topin{max-width:var(--max);margin:auto;padding:.65rem 1.1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.brand{text-decoration:none;color:var(--ink);line-height:1.18}.brand strong{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.79rem;text-transform:uppercase;letter-spacing:.095em}.brand span{display:block;color:var(--muted);font-size:.79rem}
+.nav{display:flex;gap:.32rem;align-items:center;flex-wrap:wrap;justify-content:flex-end}.nav a,.nav button{border:0;background:transparent;color:var(--ink);text-decoration:none;padding:.43rem .58rem;border-radius:999px;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.76rem;font-weight:750}.nav a:hover,.nav button:hover{background:rgba(255,255,255,.7)}.profile-pill{border:1px solid var(--line)!important;background:#fff!important}
+.hero{position:relative;min-height:680px;display:grid;align-items:end;overflow:hidden;background:#141210}
+.hero-media{position:absolute;inset:0}.hero-media img{width:100%;height:100%;object-fit:cover;filter:saturate(.88) contrast(1.03)}
+.hero-media:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(16,14,13,.87) 0%,rgba(16,14,13,.55) 42%,rgba(16,14,13,.15) 72%),linear-gradient(0deg,rgba(16,14,13,.84),transparent 55%)}
+.hero-inner{position:relative;z-index:2;width:min(var(--max),calc(100% - 2.2rem));margin:0 auto;padding:5.8rem 0 4.1rem;color:#fff}
+.eyebrow{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.75rem;font-weight:850;text-transform:uppercase;letter-spacing:.11em;color:#f1d79f}
+.hero h1{max-width:760px;font-size:clamp(3.25rem,8vw,7rem);line-height:.87;letter-spacing:-.055em;margin:.55rem 0 .8rem;text-wrap:balance}
+.hero-deck{max-width:710px;font-size:1.16rem;color:#f4ede2;margin:.8rem 0 1.2rem}
+.film-meta{display:flex;gap:.55rem;flex-wrap:wrap;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.78rem}.film-meta span{border:1px solid rgba(255,255,255,.36);background:rgba(0,0,0,.22);padding:.34rem .55rem;border-radius:999px}
+.hero-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.3rem}.hero-actions a,.hero-actions button{border-radius:999px;padding:.7rem 1rem;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.8rem;font-weight:800;text-decoration:none}.primary{border:0;background:#fff;color:#181411}.secondary{border:1px solid rgba(255,255,255,.48);background:rgba(0,0,0,.2);color:#fff}
+main{max-width:var(--max);margin:auto;padding:0 1.1rem 5rem}
+.orientation{margin-top:-1.65rem;position:relative;z-index:3;display:grid;grid-template-columns:1.15fr .85fr;gap:1rem}
+.panel{background:var(--card);border:1px solid rgba(205,188,166,.92);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.panel-pad{padding:1.25rem 1.3rem}
+.kicker{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.72rem;text-transform:uppercase;letter-spacing:.095em;font-weight:850;color:var(--plum)}
+.orientation h2{font-size:clamp(1.55rem,3vw,2.45rem);line-height:1.1;margin:.35rem 0 .75rem}
+.legend{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.8rem}.tag{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.68rem;font-weight:780;padding:.28rem .44rem;border-radius:999px;border:1px solid transparent}.evidence{background:#dbe9e8;color:#143f3c;border-color:#bdd1cf}.interpret{background:#eee0e7;color:#552d47;border-color:#dcc3d0}.searchtag{background:#eee8d7;color:#5a451b;border-color:#dbcca3}.visitor{background:#e8e8e8;color:#444;border-color:#d0d0d0}
+.poster-card{display:grid;grid-template-columns:140px 1fr;gap:1rem;align-items:center}.poster-card img{border-radius:12px;box-shadow:0 12px 28px rgba(30,20,12,.22)}.poster-card h3{margin:.2rem 0;font-size:1.3rem}.poster-card p{margin:.3rem 0;color:var(--muted);font-size:.9rem}
+.search-band{margin:2rem 0;background:linear-gradient(135deg,#211d1a,#342a26);color:#fff;border-radius:22px;box-shadow:var(--shadow);padding:1.35rem}
+.search-band .kicker{color:#ebce91}.search-band h2{margin:.25rem 0 .35rem;font-size:1.55rem}.search-band p{color:#e7ded3;margin:.2rem 0 .9rem}
+.search-row{display:grid;grid-template-columns:1fr auto;gap:.55rem}.search-row textarea{min-height:90px;border:1px solid rgba(255,255,255,.22);border-radius:14px;background:#fff;color:#181411;padding:.8rem;resize:vertical}.search-row button{align-self:end;border:0;background:#f7f1e8;color:#1f1b18;padding:.72rem 1rem;border-radius:999px;font-family:ui-sans-serif,system-ui,sans-serif;font-weight:850}
+.search-tools{display:flex;gap:.55rem;align-items:center;flex-wrap:wrap;margin-top:.55rem}.search-tools button{border:0;background:transparent;color:#f4dfad;text-decoration:underline;padding:.2rem}.search-tools select{border:1px solid rgba(255,255,255,.28);background:#2c2723;color:#fff;border-radius:999px;padding:.34rem .55rem;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.73rem}
+.help{display:none;margin-top:.9rem;border-top:1px solid rgba(255,255,255,.18);padding-top:.8rem}.help.open{display:block}.helpgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.45rem}.helpgrid button{text-align:left;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;border-radius:11px;padding:.7rem;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.77rem;font-weight:700}
+.section{padding:3.1rem 0 .25rem}.section-head{display:flex;justify-content:space-between;align-items:end;gap:1rem;margin-bottom:1rem}.section-head h2{font-size:clamp(2rem,4vw,3.25rem);line-height:1;margin:.25rem 0}.section-head p{max-width:550px;color:var(--muted);margin:0}
+.nodes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem}.node{padding:1rem;background:var(--card);border:1px solid var(--line);border-radius:16px;min-height:190px;display:flex;flex-direction:column}.node .num{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.69rem;color:var(--muted);font-weight:800}.node h3{font-size:1.18rem;line-height:1.2;margin:.45rem 0}.node p{color:#4e4842;font-size:.91rem;margin:.2rem 0 .8rem}.node .node-actions{margin-top:auto;display:flex;gap:.5rem;flex-wrap:wrap}.node button,.node a{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.72rem;font-weight:800;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:.4rem .58rem;text-decoration:none}
+.fact-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}.fact{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1rem}.fact h3{margin:.2rem 0 .45rem}.fact p{margin:.35rem 0;color:#4d4741}.source-line{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.7rem;color:var(--muted);margin-top:.65rem}
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem}.moment{border-top:4px solid var(--gold);background:var(--card);border-radius:0 0 14px 14px;padding:.9rem}.moment strong{display:block;font-size:1.45rem;color:var(--plum)}.moment span{font-size:.87rem;color:#504943}
+.spiral{background:linear-gradient(135deg,rgba(92,59,80,.10),rgba(61,103,100,.08));border:1px solid var(--line);border-radius:20px;padding:1.2rem}.spiral-flow{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.8rem}.spiral-step{flex:1 1 150px;border:1px solid rgba(92,59,80,.2);background:#fff;border-radius:999px;padding:.5rem .65rem;text-align:center;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.72rem;font-weight:750}.spiral-note{color:var(--muted);font-size:.88rem}
+.trailer{aspect-ratio:16/9;background:#111;border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}.trailer iframe{width:100%;height:100%;border:0}
+.results-wrap{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:.9rem;align-items:start}
+.results{display:grid;gap:.8rem}.empty{padding:1rem;border:1px dashed var(--line);border-radius:14px;background:rgba(255,255,255,.4);color:var(--muted)}
+.result{background:var(--card);border:1px solid var(--line);border-radius:17px;box-shadow:0 10px 28px rgba(50,35,23,.07);overflow:hidden}.result.selected{outline:3px solid rgba(166,125,52,.22)}
+.rhead{display:grid;grid-template-columns:auto 1fr auto;gap:.7rem;padding:1rem;border-bottom:1px solid var(--line);align-items:start}.rhead input{width:1.12rem;height:1.12rem;margin-top:.28rem}.rhead h3{margin:0;font-size:1.05rem;line-height:1.3}.rmeta{font-family:ui-sans-serif,system-ui,sans-serif;color:var(--muted);font-size:.73rem;margin-top:.25rem}.access{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.67rem;font-weight:850;border:1px solid var(--line);background:#fff;border-radius:999px;padding:.3rem .48rem;white-space:nowrap}
+.rbody{padding:1rem}.connection{background:#e7eeee;border-radius:10px;padding:.7rem}.connection strong,.label{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.7rem;text-transform:uppercase;letter-spacing:.055em}.chips{display:flex;gap:.32rem;flex-wrap:wrap;margin-top:.35rem}.chip{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.66rem;border:1px solid rgba(0,0,0,.11);background:#fff;border-radius:999px;padding:.23rem .4rem}
+mark{background:#ffe1a0;padding:0 .07em}.abstract{margin:.55rem 0}.rbody details{border-top:1px solid var(--line);margin-top:.7rem;padding-top:.6rem}.rbody summary{font-family:ui-sans-serif,system-ui,sans-serif;font-weight:800;font-size:.76rem;cursor:pointer}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-top:.65rem}.notes-grid textarea{width:100%;min-height:95px;border:1px solid var(--line);border-radius:9px;padding:.55rem;background:#fff}
+.canvaswrap{background:#fff;border:1px solid var(--line);border-radius:9px;overflow:hidden}.canvasbar{display:flex;justify-content:space-between;align-items:center;padding:.35rem .5rem;border-bottom:1px solid var(--line);font:700 .68rem ui-sans-serif,system-ui,sans-serif}.canvasbar button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:.2rem .4rem}.scratch{width:100%;height:170px;touch-action:none;display:block;background:#fff}
+.related-form{display:grid;grid-template-columns:1fr 1fr .75fr;gap:.35rem;margin-top:.5rem}.related-form input,.related-form select,.related-form textarea{border:1px solid var(--line);background:#fff;border-radius:8px;padding:.48rem}.related-form textarea{grid-column:1/-1;min-height:65px}.related-list{font-size:.82rem}
+.session{position:sticky;top:5rem;background:#28231f;color:#fff;border-radius:17px;box-shadow:var(--shadow);overflow:hidden}.session h3{margin:0;font-size:1rem}.session-head{padding:.85rem 1rem;border-bottom:1px solid rgba(255,255,255,.14)}.session-body{padding:.9rem}.session p{font-size:.82rem;color:#d8cec2}.session button{width:100%;margin:.27rem 0;border:1px solid rgba(255,255,255,.22);background:#fff;color:#201c19;border-radius:999px;padding:.55rem;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.73rem;font-weight:800}.trail{max-height:180px;overflow:auto;border-top:1px solid rgba(255,255,255,.12);margin-top:.7rem;padding-top:.5rem;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.68rem;color:#d8cec2}
+.sources{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem}.source{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:.7rem;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.76rem}.source strong{display:block;color:var(--ink)}.source span{color:var(--muted)}
+footer{border-top:1px solid var(--line);max-width:var(--max);margin:4rem auto 0;padding:1.5rem 1.1rem 3rem;color:var(--muted);font-family:ui-sans-serif,system-ui,sans-serif;font-size:.75rem}
+.profile-overlay{position:fixed;inset:0;z-index:1000;background:rgba(24,20,17,.84);backdrop-filter:blur(14px);display:grid;place-items:center;padding:1rem}.profile-overlay[hidden]{display:none}.profile-card{width:min(760px,100%);max-height:92vh;overflow:auto;background:#f8f3eb;border:1px solid #d5c4ad;border-radius:24px;box-shadow:0 30px 90px rgba(0,0,0,.38);padding:1.4rem}.profile-card h2{font-size:2rem;line-height:1.05;margin:.3rem 0}.profile-card>p{color:#5c554e}.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.choice-set{display:grid;gap:.45rem}.choice{position:relative}.choice input{position:absolute;opacity:0}.choice label{display:block;border:1px solid var(--line);background:#fff;border-radius:12px;padding:.7rem;cursor:pointer}.choice input:checked+label{outline:3px solid rgba(166,125,52,.22);border-color:var(--gold)}.choice label strong{display:block;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.78rem}.choice label span{font-size:.82rem;color:var(--muted)}.guided{margin:1rem 0;padding:.8rem;background:#eee5d5;border-radius:12px}.profile-actions{display:flex;justify-content:space-between;gap:.6rem;align-items:center;margin-top:1rem}.profile-actions button{border:0;background:#211d1a;color:#fff;border-radius:999px;padding:.65rem 1rem;font-family:ui-sans-serif,system-ui,sans-serif;font-weight:850}.profile-actions .privacy{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.7rem;color:var(--muted);max-width:420px}
+.content-notice{border-left:4px solid var(--rose);padding:.8rem 1rem;background:#f2e5e4;border-radius:0 12px 12px 0;margin:.8rem 0}.sensitive[data-hidden="true"]{display:none}
+.status{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.72rem;color:#d8cec2}
+@media(max-width:920px){.orientation,.results-wrap{grid-template-columns:1fr}.nodes{grid-template-columns:repeat(2,1fr)}.timeline{grid-template-columns:repeat(2,1fr)}.session{position:relative;top:auto}.profile-grid{grid-template-columns:1fr}}
+@media(max-width:620px){.topin{align-items:flex-start}.brand span{display:none}.nav a{display:none}.hero{min-height:590px}.hero-inner{padding-bottom:2.5rem}.orientation{margin-top:-.8rem}.poster-card{grid-template-columns:95px 1fr}.search-row{grid-template-columns:1fr}.nodes,.fact-grid,.timeline,.sources,.notes-grid{grid-template-columns:1fr}.helpgrid{grid-template-columns:1fr}.related-form{grid-template-columns:1fr}.related-form textarea{grid-column:auto}.rhead{grid-template-columns:auto 1fr}.access{grid-column:2}.profile-card{padding:1rem}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<div class="profile-overlay" id="profileOverlay" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+  <div class="profile-card">
+    <div class="kicker">Temporary visit profile</div>
+    <h2 id="profileTitle">Before you begin</h2>
+    <p>This project uses film to explore Black diasporic history, culture, representation, and social questions. Some films and histories include difficult material. Your temporary profile helps set an appropriate level of content and research detail for this visit.</p>
+
+    <div class="profile-grid">
+      <fieldset style="border:0;padding:0;margin:0">
+        <legend class="kicker">Age</legend>
+        <div class="choice-set">
+          <div class="choice"><input type="radio" name="age" id="ageChild" value="child"><label for="ageChild"><strong>Child / Family</strong><span>Under 13. Curated public content with additional safeguards.</span></label></div>
+          <div class="choice"><input type="radio" name="age" id="ageTeen" value="teen"><label for="ageTeen"><strong>Teen</strong><span>13–17. More historical and film context, with sensitive material still limited.</span></label></div>
+          <div class="choice"><input type="radio" name="age" id="ageAdult" value="adult"><label for="ageAdult"><strong>Adult</strong><span>18+. Full public content; research depth still depends on purpose.</span></label></div>
+        </div>
+      </fieldset>
+
+      <fieldset style="border:0;padding:0;margin:0">
+        <legend class="kicker">Purpose</legend>
+        <div class="choice-set">
+          <div class="choice"><input type="radio" name="purpose" id="pBrowse" value="browse"><label for="pBrowse"><strong>Curiosity / casual browsing</strong><span>Explore the film, history, people, and connections.</span></label></div>
+          <div class="choice"><input type="radio" name="purpose" id="pLearn" value="learn"><label for="pLearn"><strong>Learning / school</strong><span>More context, guided questions, and a manageable research layer.</span></label></div>
+          <div class="choice"><input type="radio" name="purpose" id="pTeach" value="teach"><label for="pTeach"><strong>Teaching / family learning</strong><span>Use the material with students, family, or a public group.</span></label></div>
+          <div class="choice"><input type="radio" name="purpose" id="pResearch" value="research"><label for="pResearch"><strong>Research</strong><span>Deeper source metadata, abstracts, provenance, and research-session tools.</span></label></div>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="guided" id="guidedWrap" hidden>
+      <label><input type="checkbox" id="guided"> A parent, guardian, or adult educator is exploring with the child/teen.</label>
+    </div>
+
+    <label style="display:block;margin-top:.8rem;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.75rem">
+      <input type="checkbox" id="confirmProfile"> I confirm that this temporary profile reasonably describes this visit.
+    </label>
+
+    <div class="profile-actions">
+      <div class="privacy">No account is created. This profile and any notes remain in this browser unless you choose to download a research session.</div>
+      <button type="button" id="enterSite">Enter</button>
+    </div>
+  </div>
+</div>
+
+<header class="topbar">
+  <div class="topin">
+    <a href="#top" class="brand"><strong>Open Research Navigator</strong><span>Film · history · culture · research</span></a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#film">Film</a><a href="#history">History</a><a href="#connections">Connections</a><a href="#research">Research</a>
+      <button type="button" id="accessibilityBtn">Accessibility</button>
+      <button type="button" class="profile-pill" id="changeProfile">Profile</button>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero-media">
+    <img src="https://cohenmedia.net/userFiles/uploads/filmtrack/BDE5DF00-64E6-E511-9488-0E563B5FB261/Daughters-of-the-Dust-630x330-3.jpg"
+         alt="Publicity still from Daughters of the Dust showing three women from the Peazant family by the water."
+         referrerpolicy="no-referrer">
+  </div>
+  <div class="hero-inner">
+    <div class="eyebrow">Film as an entry point</div>
+    <h1><em>Daughters of the Dust</em></h1>
+    <p class="hero-deck">Julie Dash’s film opens outward into Gullah Geechee history, migration, Black women’s authorship, cultural memory, the L.A. Rebellion, institutions, preservation, and the scholarship that continues to surround the film.</p>
+    <div class="film-meta"><span>Julie Dash</span><span>1991</span><span>112 min.</span><span>National Film Registry · 2004</span></div>
+    <div class="hero-actions">
+      <a class="primary" href="#film">Explore the film</a>
+      <button class="secondary ask" data-query="What scholarship helps explain why Daughters of the Dust matters in Black film history?">Ask the Navigator</button>
+    </div>
+  </div>
+</section>
+
+<main id="main">
+  <section class="orientation">
+    <article class="panel panel-pad">
+      <div class="kicker">A place to begin</div>
+      <h2>Read first, search first, or move between the two.</h2>
+      <p>This demonstrator treats the film page as a public-humanities environment rather than a database entry. Facts, historical context, interpretation, and research remain connected but visibly distinct.</p>
+      <div class="legend">
+        <span class="tag evidence">documented evidence</span>
+        <span class="tag interpret">project interpretation</span>
+        <span class="tag searchtag">Open Research result</span>
+        <span class="tag visitor">your note / connection</span>
+      </div>
+    </article>
+    <article class="panel panel-pad poster-card">
+      <img src="https://cohenmedia.net/media_cache/userFiles/uploads/films/Daughters_Of_The_Dust/film_poster/DaughtersOfTheDust_CMG_Webposter.jpg"
+           alt="Poster for the 25th anniversary restoration of Daughters of the Dust." referrerpolicy="no-referrer">
+      <div>
+        <div class="kicker">Film record</div>
+        <h3><em>Daughters of the Dust</em></h3>
+        <p>Writer, director, producer: Julie Dash</p>
+        <p>Story setting: Sea Islands, 1902</p>
+        <p class="source-line">Publicity image: Cohen Media Group. Prototype use; rights review remains part of production planning.</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="search-band" id="ask">
+    <div class="kicker">Open Research Navigator</div>
+    <h2>What do you want to know?</h2>
+    <p>Your question leads. The current film page supplies quiet context for highlighting connections, not a replacement question.</p>
+    <div class="search-row">
+      <textarea id="query" aria-label="Research question" placeholder="For example: What scholarship connects Daughters of the Dust to Gullah Geechee cultural memory?"></textarea>
+      <button type="button" id="searchBtn">Search</button>
+    </div>
+    <div class="search-tools">
+      <button type="button" id="helpToggle" aria-expanded="false">Not sure what to ask? What would help right now?</button>
+      <label for="limit">Results</label>
+      <select id="limit"><option value="5">5</option><option value="10">10</option></select>
+      <span class="status" id="searchStatus">Ready</span>
+    </div>
+    <div class="help" id="help"><div class="helpgrid" id="helpGrid"></div></div>
+  </section>
+
+  <section class="section" id="film">
+    <div class="section-head">
+      <div><div class="kicker">Film</div><h2>Why this film matters here</h2></div>
+      <p>A film is not treated as transparent historical evidence. It is an authored work that can lead us toward people, histories, institutions, archives, and scholarship.</p>
+    </div>
+    <div class="fact-grid">
+      <article class="fact">
+        <span class="tag evidence">documented evidence</span>
+        <h3>A landmark theatrical release</h3>
+        <p>UCLA and the Library of Congress identify the film as the first American feature directed by an African American woman to receive a general or wide theatrical release.</p>
+        <p class="source-line">Sources: UCLA Film & Television Archive; Library of Congress.</p>
+      </article>
+      <article class="fact">
+        <span class="tag evidence">documented evidence</span>
+        <h3>The Peazant family, 1902</h3>
+        <p>The film centers an extended Gullah family living on the Sea Islands as members prepare to leave for the mainland and the North, creating conflict around movement, family ties, cultural continuity, and the future.</p>
+        <p class="source-line">Sources: Library of Congress; UCLA Film & Television Archive.</p>
+      </article>
+      <article class="fact">
+        <span class="tag interpret">project interpretation</span>
+        <h3>Memory rather than chronology</h3>
+        <p>For this project, the film is especially useful for thinking about ancestral memory, maternal lineage, migration, ritual gathering, the Unborn Child, land, sea, and nonlinear time.</p>
+        <button class="ask" data-query="What scholarship discusses memory, ancestry, nonlinear time, or the Unborn Child in Daughters of the Dust?">Explore this in the research</button>
+      </article>
+      <article class="fact sensitive" data-sensitive="adult">
+        <span class="tag interpret">project interpretation</span>
+        <h3>Historical trauma and bodily memory</h3>
+        <p>The film also carries histories of racial and sexual violence, pain, survival, and intergenerational memory. In this prototype, that material is surfaced only for an adult profile or an accompanied younger profile.</p>
+        <button class="ask" data-query="What scholarship examines trauma, gender, sexual violence, and intergenerational memory in Daughters of the Dust?">Explore this in the research</button>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="history">
+    <div class="section-head">
+      <div><div class="kicker">History & context</div><h2>The film opens onto a larger world</h2></div>
+      <p>The goal is not to make the film stand in for history. The page provides independent historical pathways that a visitor can follow and question.</p>
+    </div>
+    <div class="nodes">
+      <article class="node">
+        <div class="num">01 · PLACE & PEOPLE</div><h3>Gullah Geechee / Sea Islands</h3>
+        <p>The Gullah Geechee Cultural Heritage Corridor identifies a living cultural heritage extending across coastal North Carolina, South Carolina, Georgia, and Florida, with distinctive traditions, language, arts, and historical continuity.</p>
+        <div class="node-actions"><a href="https://gullahgeecheecorridor.org/" target="_blank" rel="noopener">Open public history source</a><button class="ask" data-query="What scholarship connects Daughters of the Dust to Gullah Geechee history and the Sea Islands?">Ask about this</button></div>
+      </article>
+      <article class="node">
+        <div class="num">02 · FILMMAKER</div><h3>Julie Dash</h3>
+        <p>Dash studied at UCLA, where her work became part of the history now commonly discussed through the L.A. Rebellion. Her feature brings research, place, family memory, and authored cinematic form into relation.</p>
+        <div class="node-actions"><a href="https://cinema.ucla.edu/collections/la-rebellion/filmmakers/julie-dash/" target="_blank" rel="noopener">UCLA filmmaker page</a><button class="ask" data-query="What scholarship examines Julie Dash as a filmmaker and researcher?">Ask about this</button></div>
+      </article>
+      <article class="node">
+        <div class="num">03 · FORMATION</div><h3>L.A. Rebellion</h3>
+        <p>UCLA’s archival project situates Dash among Black filmmakers whose work developed through and around UCLA and challenged prevailing industrial and representational norms.</p>
+        <div class="node-actions"><a href="https://cinema.ucla.edu/collections/la-rebellion/" target="_blank" rel="noopener">Explore UCLA collection</a><button class="ask" data-query="What scholarship situates Julie Dash and Daughters of the Dust within the L.A. Rebellion?">Ask about this</button></div>
+      </article>
+      <article class="node">
+        <div class="num">04 · MOVEMENT</div><h3>Migration & cultural continuity</h3>
+        <p>The family's planned movement away from the islands creates a public-history pathway into questions of migration, mobility, memory, continuity, and what communities carry when place changes.</p>
+        <div class="node-actions"><button class="ask" data-query="What scholarship connects migration, cultural continuity, and memory in Daughters of the Dust?">Ask about this</button></div>
+      </article>
+      <article class="node">
+        <div class="num">05 · INSTITUTION</div><h3>UCLA as relational infrastructure</h3>
+        <p>UCLA matters here not simply as a line in a biography, but as a site of training, filmmaking, archival preservation, restoration, and the later historical framing of the L.A. Rebellion.</p>
+        <div class="node-actions"><button class="ask" data-query="What research discusses UCLA's role in the L.A. Rebellion and the preservation of Daughters of the Dust?">Ask about this</button></div>
+      </article>
+      <article class="node">
+        <div class="num">06 · AFTERLIFE</div><h3>Preservation, restoration & influence</h3>
+        <p>The Library of Congress added the film to the National Film Registry in 2004. Cohen Media's 25th-anniversary restoration was undertaken with UCLA, with color grading overseen by cinematographer AJ Jafa.</p>
+        <div class="node-actions"><a href="https://cohenmedia.net/product/daughters-of-the-dust" target="_blank" rel="noopener">Restoration page</a><button class="ask" data-query="What scholarship discusses the restoration, preservation, reception, or influence of Daughters of the Dust?">Ask about this</button></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="connections">
+    <div class="section-head">
+      <div><div class="kicker">Relational interpretation</div><h2>A film-specific analytical pathway</h2></div>
+      <p>This is an instructor-developed way to examine the film, not a claim that one structure defines Gullah Geechee storytelling.</p>
+    </div>
+    <div class="spiral">
+      <span class="tag interpret">project interpretation</span>
+      <h3>The Matrilineal Diasporic Spiral</h3>
+      <p class="spiral-note">A diagnostic lens for <em>Daughters of the Dust</em>: the film can be followed through gathering, invocation, contestation, ceremony, branching, and transmission rather than solitary conquest. It remains film-specific, not a universal Gullah Geechee narrative formula.</p>
+      <div class="spiral-flow">
+        <div class="spiral-step">Inherited rupture</div><div class="spiral-step">Return & gathering</div><div class="spiral-step">Invocation across time</div><div class="spiral-step">Contestation & re-membering</div><div class="spiral-step">Matriarchal ceremony</div><div class="spiral-step">Diasporic branching</div><div class="spiral-step">Transmission & futurity</div>
+      </div>
+      <div style="margin-top:.8rem"><button class="ask" data-query="What scholarship could help test a reading of Daughters of the Dust through matrilineal memory, diaspora, ritual, and transmission across generations?">Test this interpretation against scholarship</button></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div><div class="kicker">Film afterlife</div><h2>A short timeline</h2></div></div>
+    <div class="timeline">
+      <div class="moment"><strong>1902</strong><span>Story setting: a Peazant family gathering as some members prepare to leave the Sea Islands.</span></div>
+      <div class="moment"><strong>1991</strong><span>Julie Dash completes <em>Daughters of the Dust</em>.</span></div>
+      <div class="moment"><strong>2004</strong><span>The Library of Congress selects the film for the National Film Registry.</span></div>
+      <div class="moment"><strong>2016</strong><span>Cohen Media releases a 25th-anniversary restoration undertaken with UCLA.</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div><div class="kicker">Watch</div><h2>Official restoration trailer</h2></div><p>External media is linked rather than treated as project-authored material.</p></div>
+    <div class="trailer"><iframe src="https://www.youtube-nocookie.com/embed/zdMxR2M_ddM" title="Daughters of the Dust restoration trailer" loading="lazy" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
+  </section>
+
+  <section class="section" id="research">
+    <div class="section-head">
+      <div><div class="kicker">Research conversation</div><h2>Follow the scholarship</h2></div>
+      <p>Open Research Navigator returns a deliberately small set. Select only what is useful, add notes or outside material, and keep asking new questions.</p>
+    </div>
+    <div class="results-wrap">
+      <div id="results" class="results" aria-live="polite"><div class="empty">No search yet. You can ask from here or use any “Ask about this” button above.</div></div>
+      <aside class="session" aria-label="Research session">
+        <div class="session-head"><h3>My Research Session</h3><div class="status"><span id="selectedCount">0</span> selected</div></div>
+        <div class="session-body">
+          <p>Questions, timestamps, selections, notes, and related material remain in this browser unless you download them.</p>
+          <button type="button" id="txtExport">Download selected (.txt)</button>
+          <button type="button" id="htmlExport">Download Research Session (.html)</button>
+          <button type="button" id="trailToggle">Show / hide search trail</button>
+          <button type="button" id="resetSession">Start a new research session</button>
+          <div class="trail" id="trail" hidden></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section" id="sources">
+    <div class="section-head"><div><div class="kicker">Sources & provenance</div><h2>Where the public framing comes from</h2></div><p>The prototype keeps historical sources, distributor/publicity material, project interpretation, and research results visibly distinct.</p></div>
+    <div class="sources">
+      <a class="source" href="https://www.loc.gov/item/93508657/" target="_blank" rel="noopener"><strong>Library of Congress</strong><span>Film record, summary, credits, National Film Registry status.</span></a>
+      <a class="source" href="https://www.cinema.ucla.edu/collections/la-rebellion/daughters-of-the-dust/" target="_blank" rel="noopener"><strong>UCLA Film & Television Archive</strong><span>Film synopsis, credits, L.A. Rebellion context.</span></a>
+      <a class="source" href="https://cinema.ucla.edu/collections/la-rebellion/filmmakers/julie-dash/" target="_blank" rel="noopener"><strong>UCLA · Julie Dash</strong><span>Filmmaker biography, education, filmography.</span></a>
+      <a class="source" href="https://gullahgeecheecorridor.org/" target="_blank" rel="noopener"><strong>Gullah Geechee Cultural Heritage Corridor</strong><span>Public history and living cultural heritage context.</span></a>
+      <a class="source" href="https://cohenmedia.net/product/daughters-of-the-dust" target="_blank" rel="noopener"><strong>Cohen Media Group</strong><span>Restoration, publicity material, cast/crew and release information.</span></a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <strong>Open Research Navigator · proof of concept.</strong><br>
+  Film-centered public humanities with a bounded scholarly research layer. This prototype does not verify age or identity. Temporary profiles are self-attested and demonstrate how content and research depth can be constrained. Publicity imagery remains the property of its rights holders.
+</footer>
+
+<div id="accessibilityPanel" class="profile-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="accessTitle">
+  <div class="profile-card" style="max-width:520px">
+    <div class="kicker">Accessibility</div><h2 id="accessTitle">Display controls</h2>
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+      <button type="button" id="fontDown">Smaller text</button>
+      <button type="button" id="fontUp">Larger text</button>
+      <button type="button" id="contrast">High contrast</button>
+    </div>
+    <p>Keyboard navigation, semantic headings, visible focus, reduced-motion support, responsive layout, and text equivalents are part of the prototype design.</p>
+    <button type="button" id="closeAccessibility">Close</button>
+  </div>
+</div>
+
 <script src="config.js"></script>
-<script src="app.js"></script></body></html>
+<script src="app.js"></script>
+</body>
+</html>
