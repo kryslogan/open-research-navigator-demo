@@ -13,8 +13,12 @@ const now=()=>new Date().toISOString();
 const nice=x=>new Date(x).toLocaleString();
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function log(kind,text,extra={}){state.log.push({time:now(),kind,text,...extra});save(SESSION_KEY,state);renderTrail()}
-function normDoi(v=""){return v.toLowerCase().replace(/^https?:\/\/(dx\.)?doi\.org\//,"").replace(/^doi:\s*/,"").trim()}
-function rid(r){return normDoi(r.doi)||"t-"+btoa(unescape(encodeURIComponent((r.title||"untitled").slice(0,80)))).replace(/=+$/,"")}
+function normDoi(v=""){
+  return String(v ?? "").toLowerCase()
+    .replace(/^https?:\/\/(dx\.)?doi\.org\//,"")
+    .replace(/^doi:\s*/,"")
+    .trim();
+}function rid(r){return normDoi(r.doi)||"t-"+btoa(unescape(encodeURIComponent((r.title||"untitled").slice(0,80)))).replace(/=+$/,"")}
 function words(s=""){return (s.toLowerCase().match(/[\p{L}\p{N}][\p{L}\p{N}\-’']{3,}/gu)||[])}
 const STOP=new Set(["what","which","with","from","that","this","there","their","about","into","does","have","more","research","scholarship","would","could","should","where","when","they","them","your","find","show","work","works","daughters","dust"]);
 
