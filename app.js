@@ -18,7 +18,8 @@ function normDoi(v=""){
     .replace(/^https?:\/\/(dx\.)?doi\.org\//,"")
     .replace(/^doi:\s*/,"")
     .trim();
-}function rid(r){return normDoi(r.doi)||"t-"+btoa(unescape(encodeURIComponent((r.title||"untitled").slice(0,80)))).replace(/=+$/,"")}
+}
+function rid(r){return normDoi(r.doi)||"t-"+btoa(unescape(encodeURIComponent((r.title||"untitled").slice(0,80)))).replace(/=+$/,"")}
 function words(s=""){return (s.toLowerCase().match(/[\p{L}\p{N}][\p{L}\p{N}\-’']{3,}/gu)||[])}
 const STOP=new Set(["what","which","with","from","that","this","there","their","about","into","does","have","more","research","scholarship","would","could","should","where","when","they","them","your","find","show","work","works","daughters","dust"]);
 
