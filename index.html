@@ -33,7 +33,7 @@ img{max-width:100%;display:block}
 .topbar{position:sticky;top:0;z-index:80;border-bottom:1px solid rgba(205,188,166,.74);background:rgba(250,246,239,.93);backdrop-filter:blur(15px)}
 .topin{max-width:var(--max);margin:auto;padding:.65rem 1.1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
 .brand{text-decoration:none;color:var(--ink);line-height:1.18}.brand strong{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.79rem;text-transform:uppercase;letter-spacing:.095em}.brand span{display:block;color:var(--muted);font-size:.79rem}
-.nav{display:flex;gap:.32rem;align-items:center;flex-wrap:wrap;justify-content:flex-end}.nav a,.nav button{border:0;background:transparent;color:var(--ink);text-decoration:none;padding:.43rem .58rem;border-radius:999px;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.76rem;font-weight:750}.nav a:hover,.nav button:hover{background:rgba(255,255,255,.7)}.profile-pill{border:1px solid var(--line)!important;background:#fff!important}
+.nav{display:flex;gap:.32rem;align-items:center;flex-wrap:wrap;justify-content:flex-end}.nav a,.nav button{border:0;background:transparent;color:var(--ink);text-decoration:none;padding:.43rem .58rem;border-radius:999px;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.76rem;font-weight:750}.nav a:hover,.nav button:hover{background:rgba(255,255,255,.7)}.nav .home-link{border:1px solid var(--line);background:#fff;font-weight:800}.profile-pill{border:1px solid var(--line)!important;background:#fff!important}
 .hero{position:relative;min-height:680px;display:grid;align-items:end;overflow:hidden;background:#141210}
 .hero-media{position:absolute;inset:0}.hero-media img{width:100%;height:100%;object-fit:cover;filter:saturate(.88) contrast(1.03)}
 .hero-media:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(16,14,13,.87) 0%,rgba(16,14,13,.55) 42%,rgba(16,14,13,.15) 72%),linear-gradient(0deg,rgba(16,14,13,.84),transparent 55%)}
@@ -78,7 +78,7 @@ footer{border-top:1px solid var(--line);max-width:var(--max);margin:4rem auto 0;
 .content-notice{border-left:4px solid var(--rose);padding:.8rem 1rem;background:#f2e5e4;border-radius:0 12px 12px 0;margin:.8rem 0}.sensitive[data-hidden="true"]{display:none}
 .status{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.72rem;color:#d8cec2}
 @media(max-width:920px){.orientation,.results-wrap{grid-template-columns:1fr}.nodes{grid-template-columns:repeat(2,1fr)}.timeline{grid-template-columns:repeat(2,1fr)}.session{position:relative;top:auto}.profile-grid{grid-template-columns:1fr}}
-@media(max-width:620px){.topin{align-items:flex-start}.brand span{display:none}.nav a{display:none}.hero{min-height:590px}.hero-inner{padding-bottom:2.5rem}.orientation{margin-top:-.8rem}.poster-card{grid-template-columns:95px 1fr}.search-row{grid-template-columns:1fr}.nodes,.fact-grid,.timeline,.sources,.notes-grid{grid-template-columns:1fr}.helpgrid{grid-template-columns:1fr}.related-form{grid-template-columns:1fr}.related-form textarea{grid-column:auto}.rhead{grid-template-columns:auto 1fr}.access{grid-column:2}.profile-card{padding:1rem}}
+@media(max-width:620px){.topin{align-items:flex-start}.brand span{display:none}.nav a{display:none}.nav a.home-link{display:inline-flex;align-items:center}.hero{min-height:590px}.hero-inner{padding-bottom:2.5rem}.orientation{margin-top:-.8rem}.poster-card{grid-template-columns:95px 1fr}.search-row{grid-template-columns:1fr}.nodes,.fact-grid,.timeline,.sources,.notes-grid{grid-template-columns:1fr}.helpgrid{grid-template-columns:1fr}.related-form{grid-template-columns:1fr}.related-form textarea{grid-column:auto}.rhead{grid-template-columns:auto 1fr}.access{grid-column:2}.profile-card{padding:1rem}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -131,6 +131,7 @@ footer{border-top:1px solid var(--line);max-width:var(--max);margin:4rem auto 0;
   <div class="topin">
     <a href="#top" class="brand"><strong>Open Research Navigator</strong><span>Film · history · culture · research</span></a>
     <nav class="nav" aria-label="Primary">
+      <a class="home-link" href="https://blackamerica.multidiasporic.com/" aria-label="Back to Black America home">← Back to home</a>
       <a href="#film">Film</a><a href="#history">History</a><a href="#connections">Connections</a><a href="#research">Research</a>
       <button type="button" id="accessibilityBtn">Accessibility</button>
       <button type="button" class="profile-pill" id="changeProfile">Profile</button>
@@ -183,9 +184,7 @@ footer{border-top:1px solid var(--line);max-width:var(--max);margin:4rem auto 0;
   </section>
 
   <section class="search-band" id="ask">
-    <div class="kicker">Open Research Navigator</div>
-    <h2>What do you want to know?</h2>
-    <p>Your question leads. We use the current film as context, select the source route from your temporary profile, and show only a manageable set of relevant material.</p>
+    <h2>Ask about <em>Daughters of the Dust</em></h2>
     <div class="search-row">
       <textarea id="query" aria-label="Research question" placeholder="For example: What scholarship connects Daughters of the Dust to Gullah Geechee cultural memory?"></textarea>
       <button type="button" id="searchBtn">Search</button>
@@ -196,8 +195,8 @@ footer{border-top:1px solid var(--line);max-width:var(--max);margin:4rem auto 0;
       <select id="limit"><option value="5">5</option><option value="10">10</option></select>
       <span class="status" id="searchStatus">Ready</span>
     </div>
-    <div class="help" id="help"><p style="color:#f1dfc6">Choose a direction to put it in the search box, then select Search when you are ready.</p><div class="helpgrid" id="helpGrid"></div></div>
     <div id="searchPlan" role="status" aria-live="polite" hidden></div>
+    <div class="help" id="help"><p style="color:#f1dfc6">Choose a direction to put it in the search box, then select Search when you are ready.</p><div class="helpgrid" id="helpGrid"></div></div>
   </section>
 
   <section class="section" id="film">
@@ -362,7 +361,7 @@ footer{border-top:1px solid var(--line);max-width:var(--max);margin:4rem auto 0;
 </div>
 
 <script src="config.js"></script>
-<script src="review-router.js"></script>
-<script src="app.js"></script>
+<script src="review-router.js?v=review-ui-20261026"></script>
+<script src="app.js?v=review-ui-20261026"></script>
 </body>
 </html>

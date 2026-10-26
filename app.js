@@ -181,10 +181,15 @@ async function search(){
   const limit=Number($("limit").value);
   log("user input",original,{age:profile.age,purpose:profile.purpose,intent:plan.kind});
   if(plan.needsGuidance){
+    // Guidance is not a search. Clear the previous result cards so older,
+    // unrelated results cannot appear to be the response to a help request.
+    lastResults=[];
+    $("results").innerHTML='<div class="empty">Choose a direction above, then select Search to explore it.</div>';
     showSearchPlan(plan);
     $("help").classList.add("open");$("helpToggle").setAttribute("aria-expanded","true");
     $("searchStatus").textContent="Choose a direction — no search sent";
-    $("helpToggle").focus();return;
+    $("helpGrid").querySelector("button")?.focus();
+    return;
   }
   showSearchPlan(plan);
   // Child never invokes unrestricted scholarly search. Use inspected, age-labeled resources.
