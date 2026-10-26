@@ -96,7 +96,7 @@ footer{border-top:1px solid var(--line);max-width:var(--max);margin:4rem auto 0;
         <legend class="kicker">Age</legend>
         <div class="choice-set">
           <div class="choice"><input type="radio" name="age" id="ageChild" value="child"><label for="ageChild"><strong>Child / Family</strong><span>Under 13. Curated public content with additional safeguards.</span></label></div>
-          <div class="choice"><input type="radio" name="age" id="ageTeen" value="teen"><label for="ageTeen"><strong>Teen</strong><span>13–17. More historical and film context, with sensitive material still limited.</span></label></div>
+          <div class="choice"><input type="radio" name="age" id="ageTeen" value="teen"><label for="ageTeen"><strong>Teen</strong><span>13–17. Fuller history and non-graphic treatment of difficult subjects.</span></label></div>
           <div class="choice"><input type="radio" name="age" id="ageAdult" value="adult"><label for="ageAdult"><strong>Adult</strong><span>18+. Full public content; research depth still depends on purpose.</span></label></div>
         </div>
       </fieldset>
@@ -113,7 +113,7 @@ footer{border-top:1px solid var(--line);max-width:var(--max);margin:4rem auto 0;
     </div>
 
     <div class="guided" id="guidedWrap" hidden>
-      <label><input type="checkbox" id="guided"> A parent, guardian, or adult educator is exploring with the child/teen.</label>
+      <label><input type="checkbox" id="guided"> A parent, guardian, or educator is exploring with the child/teen. This does not automatically unlock adult material for a child.</label>
     </div>
 
     <label style="display:block;margin-top:.8rem;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.75rem">
@@ -185,7 +185,7 @@ footer{border-top:1px solid var(--line);max-width:var(--max);margin:4rem auto 0;
   <section class="search-band" id="ask">
     <div class="kicker">Open Research Navigator</div>
     <h2>What do you want to know?</h2>
-    <p>Your question leads. The current film page supplies quiet context for highlighting connections, not a replacement question.</p>
+    <p>Your question leads. We use the current film as context, select the source route from your temporary profile, and show only a manageable set of relevant material.</p>
     <div class="search-row">
       <textarea id="query" aria-label="Research question" placeholder="For example: What scholarship connects Daughters of the Dust to Gullah Geechee cultural memory?"></textarea>
       <button type="button" id="searchBtn">Search</button>
@@ -196,7 +196,8 @@ footer{border-top:1px solid var(--line);max-width:var(--max);margin:4rem auto 0;
       <select id="limit"><option value="5">5</option><option value="10">10</option></select>
       <span class="status" id="searchStatus">Ready</span>
     </div>
-    <div class="help" id="help"><div class="helpgrid" id="helpGrid"></div></div>
+    <div class="help" id="help"><p style="color:#f1dfc6">Choose a direction to put it in the search box, then select Search when you are ready.</p><div class="helpgrid" id="helpGrid"></div></div>
+    <div id="searchPlan" role="status" aria-live="polite" hidden></div>
   </section>
 
   <section class="section" id="film">
@@ -223,11 +224,17 @@ footer{border-top:1px solid var(--line);max-width:var(--max);margin:4rem auto 0;
         <p>For this project, the film is especially useful for thinking about ancestral memory, maternal lineage, migration, ritual gathering, the Unborn Child, land, sea, and nonlinear time.</p>
         <button class="ask" data-query="What scholarship discusses memory, ancestry, nonlinear time, or the Unborn Child in Daughters of the Dust?">Explore this in the research</button>
       </article>
-      <article class="fact sensitive" data-sensitive="adult">
+      <article class="fact sensitive" data-sensitive="teen-adult">
         <span class="tag interpret">project interpretation</span>
         <h3>Historical trauma and bodily memory</h3>
-        <p>The film also carries histories of racial and sexual violence, pain, survival, and intergenerational memory. In this prototype, that material is surfaced only for an adult profile or an accompanied younger profile.</p>
+        <p>The film also carries histories of racial and sexual violence, pain, survival, and intergenerational memory. The text here is intended for teen and adult readers and can be explored further through the historical sources and scholarship.</p>
         <button class="ask" data-query="What scholarship examines trauma, gender, sexual violence, and intergenerational memory in Daughters of the Dust?">Explore this in the research</button>
+      </article>
+      <article class="fact child-only" hidden>
+        <span class="tag interpret">project interpretation</span>
+        <h3>Family, memory, and change</h3>
+        <p>The Peazant family remembers difficult experiences from the past while deciding which family traditions and stories they want to carry into the future.</p>
+        <button class="ask" data-query="How do family memory and traditions shape Daughters of the Dust?">Explore this question</button>
       </article>
     </div>
   </section>
@@ -318,6 +325,7 @@ footer{border-top:1px solid var(--line);max-width:var(--max);margin:4rem auto 0;
           <button type="button" id="trailToggle">Show / hide search trail</button>
           <button type="button" id="resetSession">Start a new research session</button>
           <div class="trail" id="trail" hidden></div>
+          <div id="sourcePaths" class="trail" style="max-height:none"></div>
         </div>
       </aside>
     </div>
@@ -354,6 +362,7 @@ footer{border-top:1px solid var(--line);max-width:var(--max);margin:4rem auto 0;
 </div>
 
 <script src="config.js"></script>
+<script src="review-router.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

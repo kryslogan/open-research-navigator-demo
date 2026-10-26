@@ -1,8 +1,9 @@
 const $=id=>document.getElementById(id);
 const API_BASE=(window.ORN_API_BASE||"").replace(/\/$/,"");
-const PROFILE_KEY="orn-daughters-profile-v1";
-const SESSION_KEY="orn-daughters-session-v1";
-let content=null,lastResults=[],fontScale=1,drawing=false;
+const PROFILE_KEY="orn-daughters-profile-review-v2";
+const SESSION_KEY="orn-daughters-session-review-v2";
+let content=null,reviewSources=null,lastResults=[],fontScale=1,drawing=false;
+const ROUTER=window.ORNRouter;
 
 let profile=load(PROFILE_KEY)||null;
 let state=load(SESSION_KEY)||{started:new Date().toISOString(),log:[],selected:{}};
@@ -13,12 +14,7 @@ const now=()=>new Date().toISOString();
 const nice=x=>new Date(x).toLocaleString();
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function log(kind,text,extra={}){state.log.push({time:now(),kind,text,...extra});save(SESSION_KEY,state);renderTrail()}
-function normDoi(v=""){
-  return String(v ?? "").toLowerCase()
-    .replace(/^https?:\/\/(dx\.)?doi\.org\//,"")
-    .replace(/^doi:\s*/,"")
-    .trim();
-}
+function normDoi(v=""){return String(v||"").toLowerCase().replace(/^https?:\/\/(dx\.)?doi\.org\//,"").replace(/^doi:\s*/,"").trim()}
 function rid(r){return normDoi(r.doi)||"t-"+btoa(unescape(encodeURIComponent((r.title||"untitled").slice(0,80)))).replace(/=+$/,"")}
 function words(s=""){return (s.toLowerCase().match(/[\p{L}\p{N}][\p{L}\p{N}\-’']{3,}/gu)||[])}
 const STOP=new Set(["what","which","with","from","that","this","there","their","about","into","does","have","more","research","scholarship","would","could","should","where","when","they","them","your","find","show","work","works","daughters","dust"]);
@@ -31,12 +27,15 @@ function depth(){
   if(profile.age==="teen")return profile.guided?"guided-teen":"teen";
   return profile.purpose==="learn"?"learning":"public";
 }
-function isAdultContentAllowed(){return profile?.age==="adult" || !!profile?.guided}
+function isAdultContentAllowed(){return profile?.age!=="child"}
 
 async function init(){
-  content=await (await fetch("daughters-content.json",{cache:"no-store"})).json();
+  [content,reviewSources]=await Promise.all([
+    fetch("daughters-content.json",{cache:"no-store"}).then(r=>r.json()),
+    fetch("review-sources.json",{cache:"no-store"}).then(r=>r.json())
+  ]);
   wire();
-  if(!profile)openProfile();else applyProfile();
+  if(!profile)openProfile();else {$("profileOverlay").hidden=true;applyProfile();}
   renderTrail();updateCount();
 }
 function wire(){
@@ -68,47 +67,98 @@ function saveProfile(){
   let age=document.querySelector('input[name="age"]:checked')?.value;
   let purpose=document.querySelector('input[name="purpose"]:checked')?.value;
   if(!age||!purpose||!$("confirmProfile").checked){alert("Choose an age group and purpose, then confirm the temporary profile.");return}
+  if(profile && profile.age !== age){
+    // Prevent adult research selections from being exported during a Child visit.
+    state={started:now(),log:[],selected:{}};
+    save(SESSION_KEY,state);
+    $("results").innerHTML='<div class="empty">Profile changed. Start a new search with this age group.</div>';
+    $("searchPlan").hidden=true;
+    renderTrail();updateCount();
+  }
   profile={age,purpose,guided:age==="adult"?false:$("guided").checked,created:now()};
   save(PROFILE_KEY,profile);$("profileOverlay").hidden=true;applyProfile();
 }
 function applyProfile(){
   let d=depth();
   $("changeProfile").textContent=`${profile.age==="adult"?"Adult":profile.age==="teen"?"Teen":"Child / Family"} · ${profile.purpose==="browse"?"Browse":profile.purpose==="learn"?"Learn":profile.purpose==="teach"?"Teach":"Research"}`;
-  document.querySelectorAll(".sensitive").forEach(x=>x.dataset.hidden=String(!isAdultContentAllowed()));
+  document.querySelectorAll(".sensitive").forEach(x=>x.dataset.hidden=String(profile.age==="child"));
+  document.querySelectorAll(".child-only").forEach(x=>x.hidden=profile.age!=="child");
   let ten=$("limit").querySelector('option[value="10"]');
   if(["child","teen","family","guided-teen","learning","public"].includes(d)){ $("limit").value="5"; ten.disabled=true } else ten.disabled=false;
-  $("htmlExport").style.display=["research","educator"].includes(d)?"":"none";
+  $("htmlExport").style.display=profile.age==="adult"?"":"none";
   renderHelp();
+  renderSourcePaths();
 }
 function renderHelp(){
   if(!content||!profile)return;
-  const sets={
-    child:[
-      ["Who made this film?","Who is Julie Dash and why is Daughters of the Dust important?"],
-      ["Where does the story take place?","What can I learn about the Sea Islands and Gullah Geechee history that helps me understand Daughters of the Dust?"],
-      ["Why is memory important?","What research can help explain family memory and ancestry in Daughters of the Dust?"],
-      ["What happened to the film later?","What can I learn about how Daughters of the Dust was preserved and restored?"]
-    ],
-    public:[
-      ["Explore the film","What scholarship helps explain Daughters of the Dust and its place in Black cinema?"],
-      ["Explore Gullah Geechee context","What scholarship connects Daughters of the Dust to Gullah Geechee history and cultural memory?"],
-      ["Explore Julie Dash","What scholarship examines Julie Dash as a filmmaker, writer, and researcher?"],
-      ["Explore migration & memory","What scholarship connects migration, memory, ancestry, and family in Daughters of the Dust?"],
-      ["Explore L.A. Rebellion","What scholarship situates Daughters of the Dust within the L.A. Rebellion?"],
-      ["Explore preservation & influence","What scholarship discusses the restoration, preservation, reception, or influence of Daughters of the Dust?"]
-    ],
-    research:[
-      ["Film-specific scholarship","Find scholarship on Daughters of the Dust, Julie Dash, memory, migration, Gullah Geechee history, Black women's authorship, or diasporic time."],
-      ["Citation neighborhood","What scholarship sits closest to research on Daughters of the Dust, Gullah Geechee cultural memory, and Black women's independent filmmaking?"],
-      ["Institutional history","What research connects Julie Dash, UCLA, the L.A. Rebellion, and Daughters of the Dust?"],
-      ["Form & narrative","What scholarship analyzes nonlinear time, narration, ritual, memory, or collective structure in Daughters of the Dust?"],
-      ["Preservation / circulation","What research discusses distribution, restoration, preservation, reception, or later influence of Daughters of the Dust?"],
-      ["Ask my own question",""]
-    ]
-  };
-  let d=depth(),items=d==="research"||d==="educator"?sets.research:(d==="child"||d==="family"?sets.child:sets.public);
+  let child=[
+    ["Who made the film?", "Who is Julie Dash and why is her film important?"],
+    ["Explore family and memory", "What does Daughters of the Dust show about family, ancestors, and memory?"],
+    ["Discover the Sea Islands", "What can I learn about the Sea Islands and Gullah Geechee culture?"],
+    ["Leaving home", "Why do members of the Peazant family want different futures?"],
+    ["How the story is told", "How does Daughters of the Dust tell a story across generations?"]
+  ];
+  let teen=[
+    ["Julie Dash and Black film history", "How did Julie Dash change Black independent film history?"],
+    ["Gullah Geechee history", "What is the relationship between the Sea Islands, Gullah Geechee history, and Daughters of the Dust?"],
+    ["Family, memory, and migration", "How does Daughters of the Dust connect family memory to migration?"],
+    ["Black women and cinema", "What role do Black women filmmakers play in the L.A. Rebellion?"],
+    ["Storytelling and film form", "How does Daughters of the Dust use nonlinear storytelling?"],
+    ["My own question", ""]
+  ];
+  let adult=[
+    ["Film-specific scholarship", "What scholarship addresses Daughters of the Dust, Julie Dash, and Gullah Geechee cultural memory?"],
+    ["Migration and memory", "How does Daughters of the Dust connect migration, ancestry, and memory?"],
+    ["Black independent filmmaking", "How does Julie Dash relate to the L.A. Rebellion and Black women's cinema?"],
+    ["Film form", "What scholarship examines nonlinear time and collective narration in Daughters of the Dust?"],
+    ["Preservation and influence", "What scholarship discusses the film's restoration, circulation, or reception?"],
+    ["My own question", ""]
+  ];
+  let items=profile.age==="child"?child:profile.age==="teen"?teen:adult;
   let g=$("helpGrid");g.innerHTML="";
-  items.forEach(([lab,q])=>{let b=document.createElement("button");b.textContent=lab;b.onclick=()=>{if(q)$("query").value=q;$("query").focus()};g.appendChild(b)});
+  items.forEach(([label,query])=>{
+    let b=document.createElement("button");b.type="button";b.textContent=label;
+    b.onclick=()=>{if(query)$("query").value=query;$("query").focus()};
+    g.appendChild(b)
+  });
+}
+function renderSourcePaths(){
+  const box=$("sourcePaths");if(!box||!profile||!reviewSources)return;
+  if(profile.age==="adult"){
+    box.textContent="Source type: scholarly discovery via Open Research Navigator. Library access varies by institution.";
+    return;
+  }
+  const sources=reviewSources.library_followup||[];
+  box.innerHTML='<strong>Other places to continue</strong><p style="color:#e9ddd0;margin:.4rem 0">These are optional school/library and public-resource pathways, not databases searched by this demo. Access varies.</p>';
+  sources.forEach(x=>{
+    let p=document.createElement("p");p.style.margin='.55rem 0';
+    let link=document.createElement("a");link.href=ROUTER.safeExternalUrl(x.url)||"#sources";link.textContent=x.title;link.target="_blank";link.rel="noopener noreferrer";link.style.color="#f8e6bb";
+    p.append(link,document.createTextNode(' — '+x.access));box.appendChild(p);
+  });
+}
+function showSearchPlan(plan,note=""){
+  const p=$("searchPlan");p.hidden=false;
+  p.textContent=note || (plan?.needsGuidance ? "This sounds like a request for help. Choose a direction below; no database search has been sent." :
+    `Search route: ${plan.route}. Searching for: ${plan.query}. You can edit your question and search again.`);
+  p.style.cssText="margin-top:.8rem;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:10px;padding:.7rem;font: .8rem/1.5 system-ui,sans-serif;color:#fff";
+}
+function normalizedCurated(record){
+  return {
+    title:record.title,authors:[record.creator],venue:record.publisher,
+    year:null,doi:null,found_in:[record.publisher],
+    landing_page_url:record.url,curated:true,
+    description:record.description,kind:record.kind,why:record.why,
+    abstract:null,subjects:record.topics||[],access:"Curated source",
+  };
+}
+function showCurated(question,limit=5,reason=""){
+  const route=ROUTER.ageRoute(profile);
+  const curated=ROUTER.rankedCurated(question,profile,reviewSources.curated,limit).map(normalizedCurated);
+  lastResults=curated;
+  renderResults(curated,question,0);
+  $("searchStatus").textContent=curated.length+" curated starting point"+(curated.length===1?"":"s");
+  if(reason)showSearchPlan(null,reason);
+  document.querySelector('#research').scrollIntoView({behavior:'smooth'});
 }
 function prefill(q){$("query").value=q;document.querySelector("#ask").scrollIntoView({behavior:"smooth",block:"center"});$("query").focus()}
 function connectionTerms(r,q){
@@ -125,31 +175,69 @@ function highlight(text,terms){
   });return safe;
 }
 function quickRead(abs){if(!abs)return"";let bits=abs.match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[abs];let s=bits.slice(0,2).join(" ").trim();return s.length>520?s.slice(0,517)+"…":s}
-function sensitiveResult(r){
-  if(isAdultContentAllowed())return false;
-  let hay=`${r.title||""} ${r.abstract||""} ${(r.subjects||[]).join(" ")}`.toLowerCase();
-  return ["sexual violence","sexual assault","rape","prostitution","pornograph","sexual abuse","incest"].some(x=>hay.includes(x));
-}
 async function search(){
-  let q=$("query").value.trim();if(!q)return;
-  if(!API_BASE){$("searchStatus").textContent="Backend not connected";return}
-  let limit=Number($("limit").value);
-  $("searchStatus").textContent="Searching…";log("search",q,{limit,profile:{age:profile.age,purpose:profile.purpose}});
-  let headers={"Content-Type":"application/json","X-Navigator-Key":sessionStorage.getItem("orn-code")||""};
-  let body=JSON.stringify({query:q,limit,context:{known_sources:[]}});
+  const original=$("query").value.trim();if(!original)return;
+  const plan=ROUTER.plan(original,profile);
+  const limit=Number($("limit").value);
+  log("user input",original,{age:profile.age,purpose:profile.purpose,intent:plan.kind});
+  if(plan.needsGuidance){
+    showSearchPlan(plan);
+    $("help").classList.add("open");$("helpToggle").setAttribute("aria-expanded","true");
+    $("searchStatus").textContent="Choose a direction — no search sent";
+    $("helpToggle").focus();return;
+  }
+  showSearchPlan(plan);
+  // Child never invokes unrestricted scholarly search. Use inspected, age-labeled resources.
+  if(profile.age==="child"){
+    log("curated route",plan.query,{source:"hand-selected website/public-history guides"});
+    showCurated(original,5);
+    return;
+  }
+  if(!API_BASE){
+    $("searchStatus").textContent="Research service unavailable — curated sources shown";
+    showCurated(original,5,"Research service is offline. Curated sources are still available.");return;
+  }
+  $("searchStatus").textContent="Searching…";
+  log("search query",plan.query,{route:plan.route});
+  const headers={"Content-Type":"application/json","X-Navigator-Key":sessionStorage.getItem("orn-code")||""};
+  const body=JSON.stringify({query:plan.query,limit:10,context:{known_sources:[]}});
   try{
-    let r=await fetch(`${API_BASE}/api/search`,{method:"POST",headers,body});
-    if(r.status===401){
+    let response=await fetch(`${API_BASE}/api/search`,{method:"POST",headers,body});
+    if(response.status===401){
       let code=prompt("Enter the Navigator access code for this demonstration:")||"";
       sessionStorage.setItem("orn-code",code);headers["X-Navigator-Key"]=code;
-      r=await fetch(`${API_BASE}/api/search`,{method:"POST",headers,body});
+      response=await fetch(`${API_BASE}/api/search`,{method:"POST",headers,body});
     }
-    let data=await r.json();if(!r.ok)throw new Error(data.detail||"Search failed.");
-    let raw=data.results||[],filtered=raw.filter(x=>!sensitiveResult(x)),withheld=raw.length-filtered.length;
-    lastResults=filtered;renderResults(filtered,q,withheld);
-    $("searchStatus").textContent=`${filtered.length} result${filtered.length===1?"":"s"}${withheld?` · ${withheld} withheld for this profile`:""}`;
+    let data=await response.json();
+    if(!response.ok)throw new Error(data.detail||"Search failed");
+    const all=data.results||[];
+    const valid=all.filter(r=>ROUTER.scholarlyRelevance(r,original,profile));
+    let shown;
+    if(profile.age==="teen"){
+      // Teen route begins with public-history/curated sources; at most two tightly vetted scholarly leads.
+      let curated=ROUTER.rankedCurated(original,profile,reviewSources.curated,3).map(normalizedCurated);
+      shown=[...curated,...valid.slice(0,2)].slice(0,5);
+    }else{
+      if(plan.route==="scholarly-public"){
+        // General public: a few interpretive/public resources beside a small scholarly selection.
+        const curated=ROUTER.rankedCurated(original,profile,reviewSources.curated,2).map(normalizedCurated);
+        shown=[...curated,...valid.slice(0,Math.max(0,limit-curated.length))].slice(0,limit);
+      }else shown=valid.slice(0,limit);
+      if(!shown.length){
+        showCurated(original,5,"Scholarly results did not pass the film-context relevance check. Here are curated starting points instead; no unrelated scholarly results are shown.");
+        return;
+      }
+    }
+    lastResults=shown;
+    renderResults(shown,original,0);
+    $("searchStatus").textContent=`${shown.length} result${shown.length===1?"":"s"}`;
+    let gate=all.length-valid.length;
+    if(gate)showSearchPlan(plan,`Searching for: ${plan.query}. ${gate} off-topic or profile-inappropriate scholarly result${gate===1?' was':'s were'} excluded before display.`);
     document.querySelector("#research").scrollIntoView({behavior:"smooth"});
-  }catch(e){$("searchStatus").textContent="Search did not complete";$("results").innerHTML=`<div class="empty">${esc(e.message)}</div>`}
+  }catch(e){
+    showCurated(original,5,"The live research service did not complete this search. You can still explore the curated sources while the service is unavailable.");
+    $("searchStatus").textContent="Live search unavailable";
+  }
 }
 function entry(id,r){let e=state.selected[id]||{selected:false,result:r,related:[]};e.result=r;e.related=e.related||[];state.selected[id]=e;return e}
 function renderResults(rows,q,withheld=0){
@@ -158,7 +246,9 @@ function renderResults(rows,q,withheld=0){
   if(!rows.length){let n=document.createElement("div");n.className="empty";n.textContent="No results are available in this small set for the current profile. Try another question or change the profile.";area.appendChild(n);return}
   let d=depth();
   rows.forEach((r,i)=>{
-    let id=rid(r),saved=state.selected[id]||{},terms=connectionTerms(r,q),abs=r.abstract||"",qr=quickRead(abs),subjects=(r.subjects||[]).slice(0,8);
+    let id=rid(r),saved=state.selected[id]||{},terms=r.curated?[]:connectionTerms(r,q),abs=r.abstract||"",qr=r.curated?"":quickRead(abs),subjects=r.curated?[]:(r.subjects||[]).slice(0,8);
+    let safeLanding=ROUTER.safeExternalUrl(r.landing_page_url,!!r.curated);
+    let safePdf=ROUTER.safeExternalUrl(r.pdf_url);
     let card=document.createElement("article");card.className="result"+(saved.selected?" selected":"");
     let showFull=["research","educator"].includes(d);
     card.innerHTML=`
@@ -168,12 +258,13 @@ function renderResults(rows,q,withheld=0){
         <span class="access">${esc(r.access||"Discovered")}</span>
       </div>
       <div class="rbody">
-        <div class="connection"><strong>Why this may connect</strong><div class="chips">${terms.map(t=>`<span class="chip">${esc(t)}</span>`).join("")||'<span class="chip">Search/provider relevance — inspect the source</span>'}</div></div>
+        <div class="connection"><strong>Why this may connect</strong>${r.curated?`<p style="margin:.4rem 0">${esc(r.why||"")}</p>`:`<div class="chips">${terms.map(t=>`<span class="chip">${esc(t)}</span>`).join("")||'<span class="chip">Retrieved by provider — check relevance</span>'}</div>`}</div>
+        ${r.curated?`<p><span class="label">${esc(r.kind||"Curated reference")}</span><br>${esc(r.description||"")}</p><p class="rmeta">This is a project-selected starting point, not a live database result or a provider-supplied abstract.</p>${safeLanding?`<p><a href="${esc(safeLanding)}" ${safeLanding.startsWith('#')?'':'target="_blank" rel="noopener noreferrer"'}>Explore this source</a>${profile.age==='child'&&!safeLanding.startsWith('#')?' · An adult can help review external websites.':''}</p>`:''}`:''}
         ${qr?`<div style="margin-top:.7rem"><span class="label">Quick read — from the available abstract</span><p>${highlight(qr,terms)}</p></div>`:""}
-        ${showFull?`<div><span class="label">Abstract</span><p class="abstract">${abs?highlight(abs,terms):"No abstract was available from the indexed sources."}</p></div>`:
+        ${r.curated?"":showFull?`<div><span class="label">Abstract</span><p class="abstract">${abs?highlight(abs,terms):"No abstract was available from the indexed sources."}</p></div>`:
           `<details><summary>View available abstract</summary><p class="abstract">${abs?highlight(abs,terms):"No abstract was available from the indexed sources."}</p></details>`}
         ${subjects.length?`<div><span class="label">Indexed subjects / keywords</span><div class="chips">${subjects.map(s=>`<span class="chip">${esc(s)}</span>`).join("")}</div></div>`:""}
-        ${showFull?`<div class="rmeta" style="margin-top:.65rem">${r.doi?`DOI: ${esc(r.doi)} · `:""}Found in: ${esc((r.found_in||[]).join(", ")||"source unavailable")}${r.pdf_url?` · <a href="${esc(r.pdf_url)}" target="_blank" rel="noopener">Open PDF</a>`:r.landing_page_url?` · <a href="${esc(r.landing_page_url)}" target="_blank" rel="noopener">Open record</a>`:""}</div>`:""}
+        ${!r.curated&&showFull?`<div class="rmeta" style="margin-top:.65rem">${r.doi?`DOI: ${esc(r.doi)} · `:""}Found in: ${esc((r.found_in||[]).join(", ")||"source unavailable")}${safePdf?` · <a href="${esc(safePdf)}" target="_blank" rel="noopener noreferrer">Open PDF</a>`:safeLanding?` · <a href="${esc(safeLanding)}" target="_blank" rel="noopener noreferrer">Open record</a>`:""}</div>`:""}
         <details ${saved.selected?"open":""}>
           <summary>Notes, handwriting, and related material</summary>
           <div class="notes-grid">
@@ -193,7 +284,7 @@ function renderResults(rows,q,withheld=0){
     card.querySelector(`#trans-${CSS.escape(id)}`).onchange=e=>{entry(id,r).transcript=e.target.value;save(SESSION_KEY,state)};
     setupCanvas(card.querySelector("canvas"),id,r);
     renderRelated(card,id,r);
-    card.querySelector("[data-add]").onclick=()=>{let title=card.querySelector("[data-title]").value.trim(),url=card.querySelector("[data-url]").value.trim(),type=card.querySelector("[data-type]").value,note=card.querySelector("[data-note]").value.trim();if(!title&&!url)return;let e=entry(id,r);e.related.push({time:now(),title,url,type,note});save(SESSION_KEY,state);log("related material",title||url,{result:r.title});card.querySelector("[data-title]").value="";card.querySelector("[data-url]").value="";card.querySelector("[data-note]").value="";renderRelated(card,id,r)};
+    card.querySelector("[data-add]").onclick=()=>{let title=card.querySelector("[data-title]").value.trim(),url=card.querySelector("[data-url]").value.trim(),type=card.querySelector("[data-type]").value,note=card.querySelector("[data-note]").value.trim();if(!title&&!url)return;if(url&&!ROUTER.safeExternalUrl(url)){alert("Please use a valid http:// or https:// URL.");return}let e=entry(id,r);e.related.push({time:now(),title,url,type,note});save(SESSION_KEY,state);log("related material",title||url,{result:r.title});card.querySelector("[data-title]").value="";card.querySelector("[data-url]").value="";card.querySelector("[data-note]").value="";renderRelated(card,id,r)};
   });updateCount()
 }
 function setupCanvas(canvas,id,r){
@@ -216,13 +307,13 @@ function exportTxt(){
   let es=selected();if(!es.length){alert("Select at least one result first.");return}
   let out=["OPEN RESEARCH NAVIGATOR","Daughters of the Dust — Research Session","",`Temporary profile: ${profile.age} / ${profile.purpose}${profile.guided?" / adult-guided":""}`,`Started: ${nice(state.started)}`,`Downloaded: ${new Date().toLocaleString()}`,"","SEARCH TRAIL","============"];
   state.log.filter(x=>x.kind==="search").forEach(x=>out.push(`${nice(x.time)}\n${x.text}\n`));
-  es.forEach((e,i)=>{let r=e.result;out.push("","=".repeat(72),`RESULT ${i+1}`,"=".repeat(72),`Title: ${r.title||""}`,`Authors: ${(r.authors||[]).join(", ")}`,`Year: ${r.year||""}`,`Source: ${r.venue||""}`,`DOI: ${r.doi||""}`,`Access: ${r.access||""}`,"","Abstract:",r.abstract||"No abstract available.","","My note:",e.note||"","Handwriting / scratchpad text:",e.transcript||"");if(e.related?.length){out.push("Related material:");e.related.forEach(x=>out.push(`- ${x.type}: ${x.title||x.url}${x.url?` — ${x.url}`:""}${x.note?` — ${x.note}`:""}`))}});
+  es.forEach((e,i)=>{let r=e.result;out.push("","=".repeat(72),`RESULT ${i+1}`,"=".repeat(72),`Title: ${r.title||""}`,`Authors: ${(r.authors||[]).join(", ")}`,`Year: ${r.year||""}`,`Source: ${r.venue||""}`,`DOI: ${r.doi||""}`,`Access: ${r.access||""}`,`Source URL: ${r.landing_page_url||""}`,"",r.curated?"Curated description:":"Abstract:",r.curated?(r.description||"No description available."):(r.abstract||"No abstract available."),"","My note:",e.note||"","Handwriting / scratchpad text:",e.transcript||"");if(e.related?.length){out.push("Related material:");e.related.forEach(x=>out.push(`- ${x.type}: ${x.title||x.url}${x.url?` — ${x.url}`:""}${x.note?` — ${x.note}`:""}`))}});
   dl(`open-research-navigator-daughters-${stamp()}.txt`,out.join("\n"),"text/plain;charset=utf-8");log("export","Downloaded selected results as text")
 }
 function exportHtml(){
   let es=selected();if(!es.length){alert("Select at least one result first.");return}
   let trail=state.log.map(x=>`<li><time>${esc(nice(x.time))}</time> — <strong>${esc(x.kind)}</strong>: ${esc(x.text)}</li>`).join("");
-  let cards=es.map((e,i)=>{let r=e.result,rel=(e.related||[]).map(x=>`<li><strong>${esc(x.type)}</strong>: ${x.url?`<a href="${esc(x.url)}">${esc(x.title||x.url)}</a>`:esc(x.title||"")}${x.note?` — ${esc(x.note)}`:""}</li>`).join("");return `<article><h2>${i+1}. ${esc(r.title||"Untitled")}</h2><p>${esc((r.authors||[]).join(", "))} · ${esc(r.year||"")} · ${esc(r.venue||"")}</p><p><strong>DOI:</strong> ${esc(r.doi||"")}<br><strong>Access:</strong> ${esc(r.access||"")}<br><strong>Found in:</strong> ${esc((r.found_in||[]).join(", "))}</p><h3>Abstract</h3><p>${esc(r.abstract||"No abstract available.")}</p><h3>My note</h3><p>${esc(e.note||"")}</p>${e.transcript?`<h3>Scratchpad text</h3><p>${esc(e.transcript)}</p>`:""}${e.drawing?`<h3>Scratchpad</h3><img style="max-width:100%;border:1px solid #bbb" src="${e.drawing}" alt="Researcher's handwritten or drawn annotation">`:""}${rel?`<h3>Related material</h3><ul>${rel}</ul>`:""}</article>`}).join("");
+  let cards=es.map((e,i)=>{let r=e.result,rel=(e.related||[]).map(x=>`<li><strong>${esc(x.type)}</strong>: ${x.url?`<a href="${esc(x.url)}">${esc(x.title||x.url)}</a>`:esc(x.title||"")}${x.note?` — ${esc(x.note)}`:""}</li>`).join("");return `<article><h2>${i+1}. ${esc(r.title||"Untitled")}</h2><p>${esc((r.authors||[]).join(", "))} · ${esc(r.year||"")} · ${esc(r.venue||"")}</p><p><strong>DOI:</strong> ${esc(r.doi||"")}<br><strong>Access:</strong> ${esc(r.access||"")}<br><strong>Found in:</strong> ${esc((r.found_in||[]).join(", "))}</p>${r.curated?`<h3>Curated description</h3><p>${esc(r.description||"")}</p>`:`<h3>Abstract</h3><p>${esc(r.abstract||"No abstract available.")}</p>`}${r.landing_page_url?`<p><a href="${esc(ROUTER.safeExternalUrl(r.landing_page_url,!!r.curated)||'#')}">Open original source</a></p>`:""}<h3>My note</h3><p>${esc(e.note||"")}</p>${e.transcript?`<h3>Scratchpad text</h3><p>${esc(e.transcript)}</p>`:""}${e.drawing?`<h3>Scratchpad</h3><img style="max-width:100%;border:1px solid #bbb" src="${e.drawing}" alt="Researcher's handwritten or drawn annotation">`:""}${rel?`<h3>Related material</h3><ul>${rel}</ul>`:""}</article>`}).join("");
   let doc=`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Open Research Navigator — Daughters of the Dust Session</title><style>body{max-width:900px;margin:auto;padding:2rem;font:18px/1.55 Georgia,serif;color:#222;background:#faf8f4}article{border-top:2px solid #a67d34;padding-top:1rem;margin-top:2rem}a{color:#5f4519}time{font: .85em system-ui}</style></head><body><h1>Open Research Navigator — Research Session</h1><p><em>Daughters of the Dust</em> (Julie Dash, 1991)</p><p><strong>Profile:</strong> ${esc(profile.age)} / ${esc(profile.purpose)}${profile.guided?" / adult-guided":""}<br><strong>Started:</strong> ${esc(nice(state.started))}<br><strong>Downloaded:</strong> ${esc(new Date().toLocaleString())}</p><p>External links require internet access. Check original sources before quoting, citing, or relying on an abstract-based quick read.</p><h2>Session trail</h2><ol>${trail}</ol><h2>Selected research</h2>${cards}</body></html>`;
   dl(`open-research-session-daughters-${stamp()}.html`,doc,"text/html;charset=utf-8");log("export","Downloaded HTML research session")
 }

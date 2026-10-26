@@ -1,0 +1,140 @@
+{
+  "version": "2026-10-review",
+  "curated": [
+    {
+      "id": "film-overview",
+      "title": "Daughters of the Dust: the Peazant family and their choices",
+      "creator": "Open Research Navigator / project team",
+      "publisher": "This website",
+      "url": "#film",
+      "kind": "Project-authored introduction",
+      "audiences": ["child", "teen", "adult"],
+      "topics": ["film", "story", "family", "memory", "ancestry", "generations", "essay", "migration", "leaving", "home"],
+      "description": "Begin with the film overview and its historical setting. The Peazant family is deciding who will leave the Sea Islands and how to carry family memory forward.",
+      "why": "A focused, age-aware starting point from the page you are already exploring."
+    },
+    {
+      "id": "julie-dash-context",
+      "title": "Julie Dash: who made the film?",
+      "creator": "Open Research Navigator / project team",
+      "publisher": "This website",
+      "url": "#history",
+      "kind": "Project-authored introduction",
+      "audiences": ["child", "teen", "adult"],
+      "topics": ["director", "julie", "dash", "filmmaker", "film", "women", "cinema", "essay"],
+      "description": "Explore Julie Dash as the writer and director of Daughters of the Dust, and why her filmmaking is an important part of Black American film history.",
+      "why": "The filmmaker's choices help explain what makes the film distinctive."
+    },
+    {
+      "id": "gullah-heritage",
+      "title": "Gullah Geechee cultural heritage and the Sea Islands",
+      "creator": "National Park Service",
+      "publisher": "U.S. National Park Service",
+      "url": "https://www.nps.gov/guge/index.htm",
+      "kind": "Public-history reference",
+      "audiences": ["child", "teen", "adult"],
+      "topics": ["gullah", "geechee", "culture", "history", "heritage", "sea", "islands", "place", "geography", "ancestry", "family", "traditions"],
+      "description": "The National Park Service introduces the Gullah Geechee Cultural Heritage Corridor and its cultural history across the southeastern coast. The external page covers difficult history in a general-public context.",
+      "why": "This provides historical and geographical context beyond the film's fictional family."
+    },
+    {
+      "id": "family-and-memory",
+      "title": "Family, memory and leaving home",
+      "creator": "Open Research Navigator / project team",
+      "publisher": "This website",
+      "url": "#film",
+      "kind": "Project-authored introduction",
+      "audiences": ["child", "teen", "adult"],
+      "topics": ["family", "memory", "migration", "leaving", "home", "generations", "ancestors", "ancestry", "belonging", "tradition", "story", "essay"],
+      "description": "As some family members prepare to leave the islands, the film asks how people remember their families and carry traditions into a different future.",
+      "why": "Connects a possible essay focus directly to the film's central family decisions."
+    },
+    {
+      "id": "film-form",
+      "title": "How the film tells its story",
+      "creator": "Open Research Navigator / project team",
+      "publisher": "This website",
+      "url": "#connections",
+      "kind": "Project-authored interpretation",
+      "audiences": ["child", "teen", "adult"],
+      "topics": ["story", "storytelling", "narrative", "time", "memory", "generations", "form", "nonlinear", "structure", "film"],
+      "description": "The film moves between generations and memories rather than following just one person's journey. The connection pathway here is the project's interpretation, not a settled fact about cultural storytelling.",
+      "why": "Useful for thinking about how storytelling form makes the film's questions visible."
+    },
+    {
+      "id": "ucla-film",
+      "title": "Daughters of the Dust — film record",
+      "creator": "UCLA Film & Television Archive",
+      "publisher": "UCLA Film & Television Archive",
+      "url": "https://www.cinema.ucla.edu/collections/la-rebellion/daughters-of-the-dust/",
+      "kind": "Archive film record",
+      "audiences": ["teen", "adult"],
+      "topics": ["film", "credits", "julie", "dash", "family", "migration", "cinema", "history", "la rebellion"],
+      "description": "Archive record with production credits, synopsis, and the film's place in Black independent cinema. This is an outside archival page with an adult historical context.",
+      "why": "Gives a documented film record and a pathway into the L.A. Rebellion."
+    },
+    {
+      "id": "ucla-rebellion",
+      "title": "L.A. Rebellion: Creating a New Black Cinema",
+      "creator": "UCLA Film & Television Archive",
+      "publisher": "UCLA Film & Television Archive",
+      "url": "https://www.cinema.ucla.edu/collections/la-rebellion/",
+      "kind": "Archive collection guide",
+      "audiences": ["teen", "adult"],
+      "topics": ["la", "rebellion", "film", "filmmaker", "julie", "dash", "ucla", "movement", "history", "preservation"],
+      "description": "UCLA explains its L.A. Rebellion collection and the work of Black filmmakers associated with the university.",
+      "why": "Connects Dash and her film to an artistic formation and institutional history."
+    },
+    {
+      "id": "loc-registry",
+      "title": "Daughters of the Dust — Library of Congress film record",
+      "creator": "Library of Congress",
+      "publisher": "Library of Congress",
+      "url": "https://www.loc.gov/item/93508657/",
+      "kind": "National collection record",
+      "audiences": ["teen", "adult"],
+      "topics": ["film", "history", "preservation", "registry", "archives", "julie", "dash"],
+      "description": "A Library of Congress catalog record useful for identifying the film and checking information about it.",
+      "why": "Offers a library source independent of the project's own interpretation."
+    },
+    {
+      "id": "nps-explainer",
+      "title": "Gullah Geechee: historical and geographical context",
+      "creator": "National Park Service",
+      "publisher": "U.S. National Park Service",
+      "url": "https://www.nps.gov/articles/gullahgeechee.htm",
+      "kind": "Public-history article",
+      "audiences": ["teen", "adult"],
+      "topics": ["gullah", "geechee", "heritage", "history", "slavery", "sea", "islands", "language", "culture", "coastal", "migration"],
+      "description": "An NPS historical introduction to the corridor, Gullah Geechee language, cultural practices and changing coastal communities.",
+      "why": "Provides a historical source that can be read alongside, but not conflated with, the film."
+    }
+  ],
+  "library_followup": [
+    {
+      "title": "Library of Congress — educational resources",
+      "url": "https://www.loc.gov/classroom-materials/",
+      "access": "Public education resources; availability and suitability vary by page"
+    },
+    {
+      "title": "Smithsonian Learning Lab",
+      "url": "https://learninglab.si.edu/",
+      "access": "Public collections and educator resources; content varies by collection"
+    },
+    {
+      "title": "Britannica School",
+      "url": "https://britannicaeducation.com/",
+      "access": "Ask your school/library whether you have access; not queried by this Navigator"
+    },
+    {
+      "title": "EBSCO Explora",
+      "url": "https://about.ebsco.com/products/explora",
+      "access": "Ask your school/library whether you have access; not queried by this Navigator"
+    },
+    {
+      "title": "World Book",
+      "url": "https://www.worldbook.com/",
+      "access": "Ask your school/library whether you have access; not queried by this Navigator"
+    }
+  ]
+}
