@@ -20,10 +20,6 @@ https://naturals-arc-tasks-ontario.trycloudflare.com
 
 If the tunnel changes, only config.js needs to be updated.
 
-Temporary access code
----------------------
-melanie-demo
-
 What the demo shows
 -------------------
 - Attractive film-centered landing page
